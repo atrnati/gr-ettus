@@ -46,6 +46,7 @@ add_library(gnuradio-ettus SHARED ${ettus_sources})
 include(GrPython)
 if(ENABLE_PYTHON)
     target_compile_definitions(gnuradio-ettus PUBLIC -DENABLE_PYTHON)
+    target_include_directories(gnuradio-ettus PUBLIC ${PYTHON_INCLUDE_DIR})
 endif(ENABLE_PYTHON)
 
 if(ENABLE_FOSPHOR)
