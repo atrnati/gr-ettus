@@ -78,6 +78,8 @@ private:
     bool d_start_time_set = false;
     //! A start time for the next stream command
     ::uhd::time_spec_t d_start_time;
+    //! Flush should wait
+    bool d_wait_on_flush;
 };
 
 } // namespace ettus

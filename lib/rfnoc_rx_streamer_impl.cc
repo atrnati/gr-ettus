@@ -71,7 +71,8 @@ rfnoc_rx_streamer_impl::rfnoc_rx_streamer_impl(rfnoc_graph::sptr graph,
       d_streamer(graph->create_rx_streamer(num_chans, stream_args)),
       d_unique_id(
           std::dynamic_pointer_cast<::uhd::rfnoc::node_t>(d_streamer)->get_unique_id()),
-      d_issue_stream_cmd_on_start(issue_stream_cmd_on_start)
+      d_issue_stream_cmd_on_start(issue_stream_cmd_on_start),
+      d_wait_on_flush(false)
 {
     // nop
 }
@@ -117,7 +118,9 @@ bool rfnoc_rx_streamer_impl::stop()
         ::uhd::stream_cmd_t stream_cmd(::uhd::stream_cmd_t::STREAM_MODE_STOP_CONTINUOUS);
         d_streamer->issue_stream_cmd(stream_cmd);
     }
-    flush();
+    if (d_wait_on_flush) {
+        flush();
+    }
     return true;
 }
 
