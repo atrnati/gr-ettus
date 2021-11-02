@@ -1,0 +1,48 @@
+id: ettus_rfnoc_split_stream
+label: RFNoC Split Stream Block
+
+templates:
+  imports: |-
+    import ettus
+    from gnuradio import uhd
+  make: |-
+    ettus.rfnoc_block_generic(
+        self.rfnoc_graph,
+        uhd.device_addr(${block_args}),
+        "SplitStream",
+        ${device_select},
+        ${instance_index})
+
+parameters:
+- id: num_chans
+  label: Number of Channels
+  dtype: int
+  default: 1
+- id: block_args
+  label: Block Args
+  dtype: string
+  default: ""
+- id: device_select
+  label: Device Select
+  dtype: int
+  default: -1
+- id: instance_index
+  label: Instance Select
+  dtype: int
+  default: -1
+- id: num_branches
+  label: Number of Branches
+  dtype: int
+  default: 2
+
+inputs:
+- domain: rfnoc
+  dtype: 'sc16'
+  multiplicity: ${num_chans}
+
+outputs:
+- domain: rfnoc
+  dtype: 'sc16'
+  multiplicity: ${num_branches}
+
+file_format: 1
