@@ -48,6 +48,9 @@ inputs:
   dtype: 'sc16'
   vlen: 1
   multiplicity: ${num_chans}
+- domain: message
+  id: freq
+  optional: true
 
 outputs:
 - domain: rfnoc

@@ -40,6 +40,8 @@ public:
                     const ::uhd::time_spec_t time = ::uhd::time_spec_t::ASAP);
     double set_output_rate(const double rate, const size_t chan);
 
+    void freq_message_handler(pmt::pmt_t freq_pmt);
+
 private:
     ::uhd::rfnoc::ddc_block_control::sptr d_ddc_ref;
 };

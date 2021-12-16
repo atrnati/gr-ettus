@@ -42,6 +42,8 @@ rfnoc_ddc::sptr rfnoc_ddc::make(rfnoc_graph::sptr graph,
 rfnoc_ddc_impl::rfnoc_ddc_impl(::uhd::rfnoc::noc_block_base::sptr block_ref)
     : rfnoc_block(block_ref), d_ddc_ref(get_block_ref<::uhd::rfnoc::ddc_block_control>())
 {
+    message_port_register_in(pmt::mp("freq"));
+    set_msg_handler(pmt::mp("freq"), [this](pmt::pmt_t msg) { this->freq_message_handler(msg); });
 }
 
 rfnoc_ddc_impl::~rfnoc_ddc_impl() {}
@@ -54,6 +56,13 @@ double rfnoc_ddc_impl::set_freq(const double freq,
                                 const ::uhd::time_spec_t time)
 {
     return d_ddc_ref->set_freq(freq, chan, time);
+}
+
+void rfnoc_ddc_impl::freq_message_handler(pmt::pmt_t freq_pmt)
+{
+    if(pmt::is_real(freq_pmt)) {
+        d_ddc_ref->set_freq(pmt::to_double(freq_pmt), 0);
+    }
 }
 
 double rfnoc_ddc_impl::set_output_rate(const double rate, const size_t chan)
