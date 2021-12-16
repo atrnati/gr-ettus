@@ -33,6 +33,7 @@ install(FILES
     ettus_rfnoc_rx_streamer.block.yml
     ettus_rfnoc_tx_radio.block.yml
     ettus_rfnoc_tx_streamer.block.yml
+    ettus_rfnoc_split_stream.block.yml
     DESTINATION share/gnuradio/grc/blocks
 )
 
