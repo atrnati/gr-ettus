@@ -44,6 +44,10 @@ rfnoc_rx_radio::sptr rfnoc_rx_radio::make(rfnoc_graph::sptr graph,
 rfnoc_rx_radio_impl::rfnoc_rx_radio_impl(::uhd::rfnoc::noc_block_base::sptr block_ref)
     : rfnoc_block(block_ref), d_radio_ref(get_block_ref<::uhd::rfnoc::radio_control>())
 {
+    message_port_register_in(pmt::mp("freq"));
+    set_msg_handler(pmt::mp("freq"), [this](pmt::pmt_t msg) { this->freq_message_handler(msg); });
+    message_port_register_in(pmt::mp("gain"));
+    set_msg_handler(pmt::mp("gain"), [this](pmt::pmt_t msg) { this->gain_message_handler(msg); });
 }
 
 rfnoc_rx_radio_impl::~rfnoc_rx_radio_impl() {}
@@ -66,6 +70,13 @@ double rfnoc_rx_radio_impl::set_frequency(const double frequency, const size_t c
     return d_radio_ref->set_rx_frequency(frequency, chan);
 }
 
+void rfnoc_rx_radio_impl::freq_message_handler(pmt::pmt_t freq_pmt)
+{
+    if(pmt::is_real(freq_pmt)) {
+        d_radio_ref->set_rx_frequency(pmt::to_double(freq_pmt), 0);
+    }
+}
+
 void rfnoc_rx_radio_impl::set_tune_args(const ::uhd::device_addr_t& args,
                                         const size_t chan)
 {
@@ -82,6 +93,13 @@ double rfnoc_rx_radio_impl::set_gain(const double gain,
                                      const size_t chan)
 {
     return d_radio_ref->set_rx_gain(gain, name, chan);
+}
+
+void rfnoc_rx_radio_impl::gain_message_handler(pmt::pmt_t gain_pmt)
+{
+    if(pmt::is_real(gain_pmt)) {
+        d_radio_ref->set_rx_gain(pmt::to_double(gain_pmt), 0);
+    }
 }
 
 void rfnoc_rx_radio_impl::set_agc(const bool enable, const size_t chan)

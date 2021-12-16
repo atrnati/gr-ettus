@@ -54,6 +54,9 @@ public:
     void set_iq_balance(const bool enable, const size_t chan);
     void set_iq_balance(const std::complex<double>& correction, const size_t chan);
 
+    void freq_message_handler(pmt::pmt_t freq_pmt);
+    void gain_message_handler(pmt::pmt_t gain_pmt);
+
 private:
     ::uhd::rfnoc::radio_control::sptr d_radio_ref;
 };

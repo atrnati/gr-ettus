@@ -82,6 +82,13 @@ parameters:
   options: ['True', 'False']
   default: 'False'
 
+inputs:
+- domain: message
+  id: freq
+  optional: true
+- domain: message
+  id: gain
+  optional: true
 
 outputs:
 - domain: rfnoc
